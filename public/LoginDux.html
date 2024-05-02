@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="angular.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/DuxStyle.css" />
+  <script src="javascript/LoginDux.js"></script>
+  <title>Dux System</title>
+</head>
+
+<body ng-app="user" ng-controller="userCtrl">
+  <!-- Header section -->
+  <header>
+    <div class="nav-logo">
+      <img src="css/images/icon.png" alt="Nemo Industries Logo" />
+      <p class="logo-text">
+      <h1>Dux</h1>
+      </p>
+    </div>
+
+    <!-- Navigation menu -->
+    <nav>
+      <div class="nav-links">
+        <a href="#About-Us">About Us</a>
+        <a href="#Serivec-Dux">Service</a>
+        <a href="#Organization">Project Organization</a>
+      </div>
+      <div class="SignInUpButon">
+        <button style="font-size: large;" ng-click="oprSignUp = false; oprSignIn = true">Sign In</button>
+        <button style="font-size: large;" ng-click="oprSignUp = true; oprSignIn = false">Sign Up</button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="box" id="myBox"
+    style="  background-color: rgba(255, 255, 255, 0.524);
+    font-family: 'Times New Roman', Times, serif;
+    
+  border: 2px solid #f5f1f1;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+  height: 400px;
+  box-shadow: 0 4px 8px rgba(242, 239, 239, 0.1); position: fixed;position: absolute; margin-top: 50px;margin-left: 60px;">
+    <div>
+      <img src="css/images/UTM-LOGO-FULL.png" alt="UTM LOGO" style="width: 200px;">
+    </div>
+    <h1 style="justify-content: center;text-align: center; font-size: xx-large;">Welcome to Dux</h1>
+
+    <p style="color:black; font-size:larger;font-weight: bolder;">
+      DUX enhances resource management with a user-friendly desktop system. It streamlines file viewing and management,
+      enforcing standardized naming for efficiency. DUX
+      categorizes shared files, simplifying tracing sessions for a more organized and convenient experience.
+    </p>
+    <div style="display: flex; margin-top: 90px;">
+      <img src="css/images/FCC.jpg" alt=" UTM LOGO" style="width: 150px; margin-right: 10px;">
+      <img src="css/images/insta.png" alt="UTM LOGO" style="width: 50px;margin-right: 10px;">
+      <img src="css/images/fb.png" alt="UTM LOGO" style="width: 50px;margin-right: 10px;">
+      <img src="css/images/LinkedIn.png" alt="UTM LOGO" style="width: 50px;">
+    </div>
+
+  </div>
+
+
+  <!-- Sign In page -->
+  <div id="signin" class="container" ng-show="oprSignIn" style="margin-left: 800px; margin-top: 100px;">
+    <span>Don't have an account?
+      <a href="#" ng-click="oprSignUp = true; oprSignIn = false">Sign Up</a>
+    </span>
+    <h2>Sign In</h2>
+    <form>
+
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" size="50" ng-model="user.username" />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" ng-model="user.passwordauth" />
+
+      <button type="button" ng-click="SignIn()">Sign In</button>
+    </form>
+  </div>
+
+
+  <!-- Sign Up page -->
+  <div id="signup" class="container" ng-show="oprSignUp" style="margin-left: 800px;">
+    <span>Have an account? <a href="#" ng-click="oprSignUp = false; oprSignIn = true">Login</a></span>
+    <h2 style="align-items: center;">Sign Up</h2>
+    <form>
+      <select style="margin-bottom: 15px; text-align: center;" class="input-field" id="registerRole"
+        ng-model="user.role" ng-init="user.role='student'">
+        <option value="student">Student</option>
+      </select>
+
+      <label>Username:</label>
+      <input type="text" placeholder="Username" size="50" ng-model="user.username" />
+
+      <div class="input-box" ng-show="user.role === 'student'">
+        <label>Matric Number:</label>
+        <input type="text" placeholder="Matric Number" size="50" ng-model="user.siri" />
+
+        <select style="margin-bottom: 15px; text-align: center;" class="input-field" id="programme" ng-model="user.prog"
+          ng-init="user.prog='SECRH'">
+          <option value="SECRH">Network & Security</option>
+          <option value="SECJH">Software Engineering</option>
+          <option value="SECBH">Bioinformatics</option>
+          <option value="SECPH">Data Engineering</option>
+          <option value="SECVH">Graphics and Multimedia Software</option>
+        </select>
+      </div>
+
+      <label>Email:</label>
+      <input type="text" placeholder="Email" ng-model="user.email ">
+
+      <label>Password:</label>
+      <input type="password" id="newPassword" name="newPassword" ng-model="user.password" />
+
+
+      <!-- <button type="button" ng-click="createUser()">Sign Up</button> -->
+      <button type="button" ng-click="CheckCheck()">Sign Up</button>
+
+    </form>
+  </div>
+
+  <!-- About Us -->
+  <div id="About-Us"
+    style="  background-color: rgba(255, 255, 255, 0.524);
+  font-family: 'Times New Roman', Times, serif; 
+    border: 2px solid #f5f1f1;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    height: 500px;
+    box-shadow: 0 4px 8px rgba(242, 239, 239, 0.1); position: fixed;position: absolute; margin-top: 250px;margin-left: 250px;">
+    <div>
+      <img src="css/images/UTM-LOGO-FULL.png" alt="UTM LOGO" style="width: 200px;">
+    </div>
+    <h1 style="justify-content: center;text-align: center; font-size: xx-large;">About Us</h1>
+
+    <p style="color:black; font-size:larger;font-weight: bolder;">
+      We were tasked to create a web portal that will solve the
+      following problem: the current approach of sharing
+      Google Drive (GD) resources, which primarily relies on
+      email messages and the default GD page
+      (https://drive.google.com/), has proven to be
+      ineffective and cumbersome for users to trace shared
+      resources. To rectify this issue, our project aims to
+      provide a user-friendly desktop web system that offers
+      an improved and more convenient way to view and
+      manage GD shared resources. In order to ensure a
+      simpler and more efficient resource sharing process, our
+      system will also include features that lead users
+      methodically. Examples of these features include
+      adherence to standard file and folder naming
+      conventions and the consistent use of created
+      information structures.
+
+    </p>
+  </div>
+
+
+  <!-- Service -->
+  <div id="Serivec-Dux"
+    style="  background-color: rgba(255, 255, 255, 0.524);
+  font-family: 'Times New Roman', Times, serif; 
+    border: 2px solid #f5f1f1;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    height: 500px;
+    box-shadow: 0 4px 8px rgba(242, 239, 239, 0.1); position: fixed;position: absolute; margin-top: 1000px;margin-left: 250px;">
+    <div>
+      <img src="css/images/UTM-LOGO-FULL.png" alt="UTM LOGO" style="width: 200px;">
+    </div>
+    <h1 style="justify-content: center;text-align: center; font-size: xx-large;">Service</h1>
+
+    <p style="color:black; font-size:larger;font-weight: bolder;">
+      The scope of our project, the development of the innovative web platform named DUX, aims
+      to empower users in efficiently managing their shared files. Drawing inspiration from current
+      Google Drive applications, DUX will serve as a comprehensive platform where all the shared
+      Google Drive links will be sorted according to the category in the DUX platform.
+
+      The key functionalities of the project include:
+
+      <br><br>&nbsp;&nbsp; ● File Naming:
+      DUX provides a user-friendly interface for naming files, ensuring clarity and
+      organization. Users can follow standard naming conventions effortlessly.
+
+      <br><br>&nbsp;&nbsp; ● File Tracing:
+      DUX tackles the challenge of tracking shared files by offering a simple tracing
+      mechanism. Users can quickly locate and trace files within the platform, eliminating
+      the complexities of traditional methods.
+
+      <br><br>&nbsp;&nbsp; ● File Sorting:
+      DUX introduces sorting feature, categorizing shared files based on customizable
+      criteria. This enhances overall accessibility, enabling users to find and manage
+      resources swiftly.
+    </p>
+  </div>
+
+
+
+
+  <!-- Organization -->
+  <div id="Organization"
+    style="  background-color: rgba(255, 255, 255, 0.524);
+  font-family: 'Times New Roman', Times, serif; 
+    border: 2px solid #f5f1f1;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 1100px;
+    width: 100%;
+    height: 600px;
+    box-shadow: 0 4px 8px rgba(242, 239, 239, 0.1); position: fixed;position: absolute; margin-top: 1750px;margin-left: 100px;">
+    <div>
+      <img src="css/images/UTM-LOGO-FULL.png" alt="UTM LOGO" style="width: 200px;">
+    </div>
+    <h1 style="justify-content: center;text-align: center; font-size: xx-large;">Project Organization</h1>
+    <div> <img src="css/images/P1.jpg" alt="" style="width: 170px;margin-left: 465px;"></div>
+    <div style="display: flex;margin-top: 20px;">
+      <img src="css/images/p2.jpg" alt="" style="width: 170px;margin-left: 70px;">
+      <img src="css/images/P3.jpg" alt="" style="width: 170px;margin-left: 30px;">
+      <img src="css/images/P4.jpg" alt="" style="width: 170px;margin-left: 30px;">
+      <img src="css/images/P5.jpg" alt="" style="width: 170px;margin-left: 30px;">
+      <img src="css/images/P6.jpg" alt="" style="width: 170px;margin-left: 30px;">
+    </div>
+
+
+
+  </div>
+
+</body>
+
+</html>
+
+
+<script>
+  window.addEventListener('scroll', function () {
+    var box = document.getElementById('myBox');
+    var scrollDistance = window.scrollY;
+
+    // Adjust the scroll threshold as needed
+    if (scrollDistance > 100) {
+      box.classList.add('scrolling');
+    } else {
+      box.classList.remove('scrolling');
+    }
+  });
+</script>

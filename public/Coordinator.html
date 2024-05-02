@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dux System</title>
+  <script src="angular.min.js"></script>
+  <script src="javascript/coordinator.js"></script>
+  <link rel="stylesheet" href="css/coordinator.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body style="background-image: url(css/images/Coordinator_B.png)" ng-app="coordinator" ng-controller="coorCtrl">
+  <div class="container light-style flex-grow-1 container-p-y"
+    style="background-color: #ecf0f1b0; margin-top: 30px; margin-left: 0px">
+    <div style="display: flex">
+      <img src="css/images/icon.png" alt="Nemo Industries Logo" style="width: 50px; height: 50px; margin-top: 5px" />
+      <h4 style="margin-left: 7px" class="font-weight-bold py-3 mb-4">
+        Welcome {{studs.studs.username }}, [{{studs.studs.role}}]
+      </h4>
+    </div>
+
+    <div class="card overflow-hidden" style="background-color: aliceblue; width: 1300px">
+      <div class="row no-gutters row-bordered row-border-light">
+        <div class="col-md-3 pt-0">
+          <div class="list-group list-group-flush account-settings-links">
+            <a class="list-group-item list-group-item-action active" data-toggle="list"
+              href="#account-general">Profile</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password"
+              ng-click="ListStudent=true;ListFilterStudent=false;SearchStudent=false">Student List</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info"
+              ng-click="Listlecturer=true;ListFilterLecturer=false;SearchLecturer=false">Lecturer List</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-social-links"
+              ng-click="listTimeTable=true;AddTimetable=false">Time Table</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-connections"
+              ng-click="ListOfEvents=true;AddEvent=false">Event</a>
+
+            <a class="list-group-item list-group-item-action" data-toggle="list" ng-click="logout()" href="" style="
+                  font-weight: bold;
+                  font-family: Georgia, 'Times New Roman', Times, serif;
+                ">
+              Log out</a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="tab-content">
+            <div class="tab-pane fade active show" id="account-general">
+              <div class="card-body media align-items-center">
+                <img src="css/images/avatar.png" alt class="d-block ui-w-80" />
+                <div class="media-body ml-4">
+                  <label class="btn btn-outline-primary">
+                    Upload new photo
+                    <input type="file" class="account-settings-fileinput" />
+                  </label>
+                  &nbsp;
+                </div>
+              </div>
+              <hr class="border-light m-0" />
+              <!-- Profile -->
+              <div class="card-body" ng-show="coorProfile">
+                <div class="form-group">
+                  <label class="form-label">Username</label>
+
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{ studs.studs.username }}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Coordinator ID</label>
+
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{ studs.studs.siri  }}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">E-mail</label>
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{ studs.studs.email  }}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Role</label>
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{ studs.studs.role  }}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{studs.studs.password}}" />
+                </div>
+
+                <div class="text-right mt-3">
+                  <button type="button" class="btn btn-primary" ng-click="updateProfile()">
+                    Update</button>&nbsp;
+                </div>
+              </div>
+
+              <!-- Update Profile -->
+              <div class="card-body" ng-show="coorUpdateProfile">
+                <div class="form-group">
+                  <label class="form-label">Username</label>
+                  <input ng-model="coordinator.username" type="text" class="form-control mb-1" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Coordinator ID</label>
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{ studs.studs.siri  }}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">E-mail</label>
+                  <input ng-model="coordinator.email " placeholder="Email" type="text" class="form-control mb-1" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Role</label>
+                  <input ng-readonly="!studs.editable" type="text" class="form-control mb-1"
+                    value="{{ studs.studs.role  }}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <input ng-model="coordinator.password" type="text" class="form-control mb-1" placeholder="Password" />
+                </div>
+
+                <div class="text-right mt-3">
+                  <button type="button" class="btn btn-primary" ng-click="SavedProfile()">
+                    Saved</button>&nbsp;
+                  <button type="button" class="btn btn-default" ng-click="coorProfile=true; coorUpdateProfile=false">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="account-change-password">
+              <div style="
+                    font-size: larger;
+                    font-weight: bold;
+                    font-family: 'Times New Roman', Times, serif;
+                    font-size: 25px;
+                    text-align: center;
+                  ">
+                List Of Students
+              </div>
+              <div style="display: flex">
+                <!-- ng-init="selectedProgramme='ALL'" -->
+                <select ng-model="selectedProgramme" ng-init="selectedProgramme='ALL'" ng-click="filterStudents()">
+                  <option value="ALL">All Programmes</option>
+                  <option value="SECRH">SECRH</option>
+                  <option value="SECVH">SECVH</option>
+                  <option value="SECPH">SECPH</option>
+                  <option value="SECJH">SECJH</option>
+                  <option value="SECBH">SECBH</option>
+                </select>
+                <input style="margin-left: 600px" ng-model="searchmatric" type="text" placeholder="Matric No" />
+                <button ng-click="searchMatric()">search</button>
+              </div>
+              <div ng-show="ListStudent">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">No.</th>
+                    <th class="w3-center">Matric.No</th>
+                    <th class="w3-center">Name</th>
+                    <th class="w3-center">email</th>
+                    <th class="w3-center">Programme</th>
+                  </tr>
+                  <tr ng-repeat="item in studList">
+                    <td class="w3-center">{{item.num}}</td>
+                    <td class="w3-center">{{item.matric}}</td>
+                    <td class="w3-center">{{item.S_name}}</td>
+                    <td class="w3-center">{{item.S_email}}</td>
+                    <td class="w3-center">{{item.programme}}</td>
+                  </tr>
+                </table>
+              </div>
+              <div ng-show="ListFilterStudent">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">No.</th>
+                    <th class="w3-center">Matric.No</th>
+                    <th class="w3-center">Name</th>
+                    <th class="w3-center">email</th>
+                    <th class="w3-center">Programme</th>
+                  </tr>
+                  <tr ng-repeat="new in studFilterList">
+                    <td class="w3-center">{{new.num}}</td>
+                    <td class="w3-center">{{new.matric}}</td>
+                    <td class="w3-center">{{new.S_name}}</td>
+                    <td class="w3-center">{{new.S_email}}</td>
+                    <td class="w3-center">{{new.programme}}</td>
+                  </tr>
+                </table>
+              </div>
+              <div ng-show="SearchStudent">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">Matric.No</th>
+                    <th class="w3-center">Name</th>
+                    <th class="w3-center">email</th>
+                    <th class="w3-center">Programme</th>
+                  </tr>
+                  <tr>
+                    <td class="w3-center">{{searchstuds.matric}}</td>
+                    <td class="w3-center">{{searchstuds.S_name}}</td>
+                    <td class="w3-center">{{searchstuds.S_email}}</td>
+                    <td class="w3-center">{{searchstuds.programme}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="account-info">
+              <div style="
+                    font-size: larger;
+                    font-weight: bold;
+                    font-family: 'Times New Roman', Times, serif;
+                    font-size: 25px;
+                    text-align: center;
+                  ">
+                List Of Lecturers
+              </div>
+              <div style="display: flex">
+                <select ng-model="selectedLectProgramme" ng-init="selectedLectProgramme='ALL'"
+                  ng-click="filterLecturer()">
+                  <option ng-click="SearchLecturer=false; Listlecturer=true; ListFilterLecturer=false;" value="ALL">
+                    All Programmes
+                  </option>
+                  <option ng-click="SearchLecturer=false; Listlecturer=false; ListFilterLecturer=true;" value="SECRH">
+                    SECRH
+                  </option>
+                  <option ng-click="SearchLecturer=false; Listlecturer=false; ListFilterLecturer=true;" value="SECVH">
+                    SECVH
+                  </option>
+                  <option ng-click="SearchLecturer=false; Listlecturer=false; ListFilterLecturer=true;" value="SECPH">
+                    SECPH
+                  </option>
+                  <option ng-click="SearchLecturer=false; Listlecturer=false; ListFilterLecturer=true;" value="SECJH">
+                    SECJH
+                  </option>
+                  <option ng-click="SearchLecturer=false; Listlecturer=false; ListFilterLecturer=true;" value="SECBH">
+                    SECBH
+                  </option>
+                </select>
+                <input style="margin-left: 600px" ng-model="searchlectID" type="text" placeholder="lecturer ID" />
+                <button ng-click=" Listlecturer=false;ListFilterLecturer=false;SearchLecturer=true; searchID();">
+                  search
+                </button>
+                <!-- Listlecturer=false; -->
+              </div>
+              <div ng-show="Listlecturer">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">No.</th>
+                    <th class="w3-center">LectID</th>
+                    <th class="w3-center">Name</th>
+                    <th class="w3-center">email</th>
+                    <th class="w3-center">Programme</th>
+                  </tr>
+                  <tr ng-repeat="items in lectList">
+                    <td class="w3-center">{{items.num}}</td>
+                    <td class="w3-center">{{items.LectID}}</td>
+                    <td class="w3-center">{{items.L_name}}</td>
+                    <td class="w3-center">{{items.L_email}}</td>
+                    <td class="w3-center">{{items.programme}}</td>
+                  </tr>
+                </table>
+              </div>
+              <div ng-show="ListFilterLecturer">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">No.</th>
+                    <th class="w3-center">LectID</th>
+                    <th class="w3-center">Name</th>
+                    <th class="w3-center">email</th>
+                    <th class="w3-center">Programme</th>
+                  </tr>
+                  <tr ng-repeat="news in lectFilterList">
+                    <td class="w3-center">{{news.num}}</td>
+                    <td class="w3-center">{{news.LectID}}</td>
+                    <td class="w3-center">{{news.L_name}}</td>
+                    <td class="w3-center">{{news.L_email}}</td>
+                    <td class="w3-center">{{news.programme}}</td>
+                  </tr>
+                </table>
+              </div>
+              <div ng-show="SearchLecturer">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">LectID</th>
+                    <th class="w3-center">Name</th>
+                    <th class="w3-center">email</th>
+                    <th class="w3-center">Programme</th>
+                  </tr>
+                  <tr>
+                    <td class="w3-center">{{searchlects.LectID}}</td>
+                    <td class="w3-center">{{searchlects.L_name}}</td>
+                    <td class="w3-center">{{searchlects.L_email}}</td>
+                    <td class="w3-center">{{searchlects.programme}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="account-social-links">
+              <div style="
+                    font-size: larger;
+                    font-weight: bold;
+                    font-family: 'Times New Roman', Times, serif;
+                    font-size: 25px;
+                    text-align: center;
+                  ">
+                List Of Time Table
+              </div>
+              <div>
+                <button ng-click="AddTimetable=true; listTimeTable=false;UpdateTimeTable=false;DeleteTimeTable=false;">
+                  ADD TIME_TABLE
+                </button>
+              </div>
+              <form ng-show="AddTimetable" style="
+                    background-color: #fff;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  ">
+                <label for="session" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Session:</label>
+                <input ng-model="SessionT" type="text" id="session" placeholder="eg: 2023/2024" name="session" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required />
+
+                <label for="semester" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Semester:</label>
+
+                <select ng-model="SemesterT" id="programme" name="programme" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required>
+                  <option value="Semester 1">Semester 1</option>
+                  <option value="Semester 2">Semester 2</option>
+                </select>
+
+                <label for="category" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Category:</label>
+                <select ng-model="CategoryT" id="programme" name="programme" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required>
+                  <option value="Undergraduate">Undergraduate</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                </select>
+
+                <label for="programme" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Programme:</label>
+                <select ng-model="ProgrammeT" id="programme" name="programme" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required>
+                  <option value="SECRH">Network & Security</option>
+                  <option value="SECJH">Software Engineering</option>
+                  <option value="SECBH">Bioinformatics</option>
+                  <option value="SECPH">Data Engineering</option>
+                  <option value="SECVH">
+                    Graphics and Multimedia Software
+                  </option>
+                  <option value="Master">Master's</option>
+                  <option value="PHD">Doctorate</option>
+                </select>
+
+                <label for="timetable" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Time Table Link:</label>
+                <input ng-model="TimetableLink" type="url" id="timetable" name="timetable" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " placeholder="https://example.com/timetable" required />
+
+                <button ng-click="CreateTimeTable()" type="button" style="
+                      background-color: #4caf50;
+                      color: #fff;
+                      padding: 10px 20px;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                    ">
+                  Submit
+                </button>
+                <button ng-click="listTimeTable=true;AddTimetable=false" type="button" style="
+                      background-color: #4caf50;
+                      color: #fff;
+                      padding: 10px 20px;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                    ">
+                  Cancel
+                </button>
+              </form>
+              <div ng-show="listTimeTable">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">No.</th>
+                    <th class="w3-center">Session</th>
+                    <th class="w3-center">Semester</th>
+                    <th class="w3-center">Category</th>
+                    <th class="w3-center">Programme</th>
+                    <th class="w3-center">TimeTable_Link</th>
+                    <th>Operations</th>
+                  </tr>
+                  <tr ng-repeat="tables in timetables">
+                    <td class="w3-center">{{tables.num}}</td>
+                    <td class="w3-center">{{tables.Session}}</td>
+                    <td class="w3-center">{{tables.Semester}}</td>
+                    <td class="w3-center">{{tables.Category}}</td>
+                    <td class="w3-center">{{tables.Programme}}</td>
+                    <td class="w3-center">
+                      <a href="{{tables.TimeTable_Link}}">
+                        {{tables.TimeTable_Link}}</a>
+                    </td>
+                    <!-- <td class="w3-center">{{tables.TimeTable_Link}}</td> -->
+                    <td>
+                      <a href="" style="color: red;" ng-click="UpdateTtable(tables, 0)">Update</a>
+
+                      <a href="" style="color: red;" ng-click="deleteTimeTable(tables, 0)">Delete</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div>
+                <form ng-show="UpdateTimeTable" style="
+                      background-color: #fff;
+                      padding: 20px;
+                      border-radius: 8px;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    ">
+                  <label for="session" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Session:</label>
+                  <input ng-model="tableT.Session" type="text" id="session" name="session" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " />
+
+                  <label for="semester" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Semester:</label>
+
+                  <select ng-model="tableT.Semester" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="Semester 1">Semester 1</option>
+                    <option value="Semester 2">Semester 2</option>
+                  </select>
+
+                  <label for="category" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Category:</label>
+                  <select ng-model="tableT.Category" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="Undergraduate">Undergraduate</option>
+                    <option value="Postgraduate">Postgraduate</option>
+                  </select>
+
+                  <label for="programme" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Programme:</label>
+                  <select ng-model="tableT.Programme" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="SECRH">Network & Security</option>
+                    <option value="SECJH">Software Engineering</option>
+                    <option value="SECBH">Bioinformatics</option>
+                    <option value="SECPH">Data Engineering</option>
+                    <option value="SECVH">
+                      Graphics and Multimedia Software
+                    </option>
+                    <option value="Master">Master's</option>
+                    <option value="PHD">Doctorate</option>
+                  </select>
+
+                  <label for="timetable" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Time Table Link:</label>
+                  <input ng-model="tableT.TimeTable_Link" type="url" id="timetable" name="timetable" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " placeholder="https://example.com/timetable" />
+
+                  <button ng-click="UpdateTtable(tableT, 1)" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Update
+                  </button>
+                  <button ng-click="listTimeTable=true;UpdateTimeTable=false" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+
+              <div>
+                <form ng-show="DeleteTimeTable" style="
+                      background-color: #fff;
+                      padding: 20px;
+                      border-radius: 8px;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    ">
+                  <label for="session" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Session:</label>
+                  <input ng-model="tableT.Session" type="text" id="session" name="session"
+                    ng-readonly="!tableT.editable" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " />
+
+                  <label for="semester" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Semester:</label>
+
+                  <select ng-model="tableT.Semester" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="Semester 1">Semester 1</option>
+                    <option value="Semester 2">Semester 2</option>
+                  </select>
+
+                  <label for="category" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Category:</label>
+                  <select ng-model="tableT.Category" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="Undergraduate">Undergraduate</option>
+                    <option value="Postgraduate">Postgraduate</option>
+                  </select>
+
+                  <label for="programme" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Programme:</label>
+                  <select ng-model="tableT.Programme" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="SECRH">Network & Security</option>
+                    <option value="SECJH">Software Engineering</option>
+                    <option value="SECBH">Bioinformatics</option>
+                    <option value="SECPH">Data Engineering</option>
+                    <option value="SECVH">
+                      Graphics and Multimedia Software
+                    </option>
+                    <option value="Master">Master's</option>
+                    <option value="PHD">Doctorate</option>
+                  </select>
+
+                  <label for="timetable" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Time Table Link:</label>
+                  <input ng-model="tableT.TimeTable_Link" ng-readonly="!tableT.editable" type="url" id="timetable"
+                    name="timetable" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " placeholder="https://example.com/timetable" />
+
+                  <button ng-click="deleteTimeTable(tableT, 1)" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Proceed
+                  </button>
+                  <button ng-click="listTimeTable=true;DeleteTimeTable=false" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            </div>
+            <!-- EVENT -->
+            <div class="tab-pane fade" id="account-connections">
+              <div style="
+                    font-size: larger;
+                    font-weight: bold;
+                    font-family: 'Times New Roman', Times, serif;
+                    font-size: 25px;
+                    text-align: center;
+                  ">
+                List Of Events
+              </div>
+              <div>
+                <!-- ng-click="AddTimetable=true; listTimeTable=false;UpdateTimeTable=false;DeleteTimeTable=false;" -->
+                <button ng-click="ListOfEvents=false;AddEvent=true">
+                  Add Event
+                </button>
+              </div>
+              <form ng-show="AddEvent" style="
+                    background-color: #fff;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  ">
+                <label for="session" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Session:</label>
+                <input ng-model="SessionE" type="text" id="session" placeholder="eg: 2023/2024" name="session" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required />
+
+                <label for="semester" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Semester:</label>
+
+                <select ng-model="SemesterE" id="programme" name="programme" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required>
+                  <option value="Semester 1">Semester 1</option>
+                  <option value="Semester 2">Semester 2</option>
+                </select>
+
+                <label for="Date" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Date:</label>
+                <input ng-model="DateE" type="text" id="session" placeholder="eg: 14-12-2023" name="session" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required />
+
+                <label for="category" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Category:</label>
+                <select ng-model="CategoryE" id="programme" name="programme" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required>
+                  <option value="leadership">Leadership</option>
+                  <option value="Career">Career</option>
+                  <option value="Academic">Academic</option>
+                  <option value="Entrepreneurship">Entrepreneurship</option>
+                  <option value="Volunteer">Volunteer</option>
+                </select>
+
+                <label for="programmeName" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Programme_Name:</label>
+                <input ng-model="ProgName" type="text" id="ProgName" placeholder="eg: Name of the programme"
+                  name="ProgName" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " required />
+
+                <label for="ProgLink" style="
+                      display: block;
+                      margin-bottom: 8px;
+                      font-weight: bold;
+                    ">Programme_Link:</label>
+                <input ng-model="ProgLink" type="url" id="ProgLink" name="ProgLink" style="
+                      width: 100%;
+                      padding: 8px;
+                      margin-bottom: 16px;
+                      box-sizing: border-box;
+                    " placeholder="https://example.com/ProgLink" required />
+
+                <button ng-click="CreateEvent();ListOfEvents=true;AddEvent=false" type="button" style="
+                      background-color: #4caf50;
+                      color: #fff;
+                      padding: 10px 20px;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                    ">
+                  Submit
+                </button>
+                <!-- ng-click="listTimeTable=true;AddTimetable=false" -->
+                <button type="button" style="
+                      background-color: #4caf50;
+                      color: #fff;
+                      padding: 10px 20px;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                    " ng-click="AddEvent=false;ListOfEvents=true">
+                  Cancel
+                </button>
+              </form>
+              <div ng-show="ListOfEvents">
+                <table class="w3-table-all">
+                  <tr class="w3-center">
+                    <th class="w3-center">No.</th>
+                    <th class="w3-center">Session</th>
+                    <th class="w3-center">Semester</th>
+                    <th class="w3-center">Date</th>
+                    <th class="w3-center">Category</th>
+                    <th class="w3-center">ProgramName</th>
+                    <th class="w3-center">Programme_Link</th>
+                    <th>Operations</th>
+                  </tr>
+                  <tr ng-repeat="events in Eventss">
+                    <td class="w3-center">{{events.num}}</td>
+                    <td class="w3-center">{{events.Session}}</td>
+                    <td class="w3-center">{{events.Semester}}</td>
+                    <td class="w3-center">{{events.Date}}</td>
+                    <td class="w3-center">{{events.Category}}</td>
+                    <td class="w3-center">{{events.ProgramName}}</td>
+                    <td class="w3-center">
+                      <a href="{{events.Programme_Link}}">{{events.Programme_Link}}</a>
+                    </td>
+                    <td>
+                      <a href="" ng-click="UpdateEvents(events, 0)" style="color: red;">Update</a>
+
+                      <a href="" ng-click="deleteEvents(events, 0)" style="color: red;">Delete</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div>
+                <form ng-show="UpdateEventC" style="
+                      background-color: #fff;
+                      padding: 20px;
+                      border-radius: 8px;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    ">
+                  <label for="session" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Session:</label>
+                  <input ng-model="eventC.Session" type="text" id="session" name="session" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " />
+
+                  <label for="semester" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Semester:</label>
+
+                  <select ng-model="eventC.Semester" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="Semester 1">Semester 1</option>
+                    <option value="Semester 2">Semester 2</option>
+                  </select>
+
+                  <label for="Date" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Date:</label>
+                  <input ng-model="eventC.Date" type="text" id="Date" placeholder="eg: 14-12-2023" name="Date" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " />
+
+                  <label for="category" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Category:</label>
+                  <select ng-model="eventC.Category" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="leadership">Leadership</option>
+                    <option value="Career">Career</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Entrepreneurship">Entrepreneurship</option>
+                    <option value="Volunteer">Volunteer</option>
+                  </select>
+
+                  <label for="ProgramName" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Program_Name:</label>
+                  <input ng-model="eventC.ProgramName" type="text" id="ProgramName"
+                    placeholder="eg: Name of the programme" name="ProgramName" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " required />
+
+                  <label for="ProgramLink" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Time Table Link:</label>
+                  <input ng-model="eventC.Programme_Link" type="url" id="ProgramLink" name="ProgramLink" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " placeholder="https://example.com/ProgramLink" />
+
+                  <button ng-click="UpdateEvents(eventC, 1)" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Update
+                  </button>
+
+                  <button ng-click="ListOfEvents=true;UpdateEventC=false" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+
+              <div>
+                <form ng-show="DeleteEvent" style="
+                      background-color: #fff;
+                      padding: 20px;
+                      border-radius: 8px;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    ">
+                  <label for="session" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Session:</label>
+                  <input ng-model="eventC.Session" ng-readonly="!eventC.editable" type="text" id="session"
+                    name="session" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " />
+
+                  <label for="semester" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Semester:</label>
+
+                  <select ng-model="eventC.Semester" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="Semester 1">Semester 1</option>
+                    <option value="Semester 2">Semester 2</option>
+                  </select>
+
+                  <label for="Date" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Date:</label>
+                  <input ng-model="eventC.Date" ng-readonly="!eventC.editable" type="text" id="Date"
+                    placeholder="eg: 14-12-2023" name="Date" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " />
+
+                  <label for="category" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Category:</label>
+                  <select ng-model="eventC.Category" id="programme" name="programme" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      ">
+                    <option value="leadership">Leadership</option>
+                    <option value="Career">Career</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Entrepreneurship">Entrepreneurship</option>
+                    <option value="Volunteer">Volunteer</option>
+                  </select>
+
+                  <label for="ProgramName" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Program_Name:</label>
+                  <input ng-model="eventC.ProgramName" ng-readonly="!eventC.editable" type="text" id="ProgramName"
+                    placeholder="eg: Name of the programme" name="ProgramName" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " required />
+
+                  <label for="ProgramLink" style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                      ">Time Table Link:</label>
+                  <input ng-model="eventC.Programme_Link" ng-readonly="!eventC.editable" type="url" id="ProgramLink"
+                    name="ProgramLink" style="
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 16px;
+                        box-sizing: border-box;
+                      " placeholder="https://example.com/ProgramLink" />
+
+                  <button ng-click="deleteEvents(eventC, 1)" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Proceed
+                  </button>
+                  <button ng-click="ListOfEvents=true;DeleteEvent=false" type="button" style="
+                        background-color: #4caf50;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      ">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- <div class="tab-pane fade" id="account-notifications"></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript"></script>
+</body>
+
+</html>

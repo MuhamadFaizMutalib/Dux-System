@@ -1,0 +1,4 @@
+CREATE USER 'DuxSys'@'localhost' IDENTIFIED BY 'DuxSys';
+CREATE DATABASE DuxSys;
+GRANT ALL PRIVILEGES ON DuxSys.* TO 'DuxSys'@'localhost';
+FLUSH PRIVILEGES;
